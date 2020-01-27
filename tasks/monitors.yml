@@ -1,0 +1,101 @@
+---
+- name: Monitors setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Configuring monitors ...'
+      - '--------------------------------------------------------------------'
+
+- name: Copy XML file to .config.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Copying monitors.xml ...'
+      - '....................................................................'
+
+- name: Download monitors.xml file.
+  get_url:
+    url: https://is.gd/fxlcpH
+    dest: /tmp/monitors.xml
+  when: not ansible_check_mode
+
+- name: Copy monitors.xml to each user .config folder.
+  copy:
+    src: /tmp/monitors.xml
+    dest: "/home/{{ item }}/.config/monitors.xml"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Copy monitors.xml to root .config folder.
+  copy:
+    src: /tmp/monitors.xml
+    dest: /root/.config/monitors.xml
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Copy monitors.xml to each user .config folder using item_name.
+  copy:
+    src: /tmp/monitors.xml
+    dest: "/home/{{ item.item_name }}/.config/monitors.xml"
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Copy monitors.xml to root .config folder using item_name.
+  copy:
+    src: /tmp/monitors.xml
+    dest: /root/.config/monitors.xml
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: Cleanup /tmp/monitors.xml file.
+  file:
+    path: /tmp/monitors.xml
+    state: absent
+
+- name: Check if /etc/gdm3/daemon.conf file exists.
+  stat:
+    path: /etc/gdm3/daemon.conf
+  register: st_res
+  when: not ansible_check_mode
+
+  - name: Create the file, if it doesnt exist already
+    file:
+      path: /etc/file.txt
+      state: touch
+    when: stat_result.stat.exists == False 
+
+- name: Disable /etc/gdm3/daemon.conf WaylandEnable (fancy monitor names).
+  lineinfile:
+    path: /etc/gdm3/daemon.conf
+    regexp: 'WaylandEnable=true'
+    line: WaylandEnable=false
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - st_res.stat.isreg is undefined or not st_res.stat.isreg | bool

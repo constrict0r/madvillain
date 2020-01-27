@@ -1,0 +1,149 @@
+---
+- name: Git configuration management.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Configuring git ...'
+      - '--------------------------------------------------------------------'
+
+- name: Handle git name on gitconfig.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Configuring git name ...'
+      - '....................................................................'
+
+- name: Configure git name.
+  lineinfile:
+    path: "/home/{{ item }}/.gitconfig"
+    line: "[user]  name = {{ item }}"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rw,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Configure git name for root.
+  lineinfile:
+    path: /root/.gitconfig
+    line: "[user]  name = {{ item }}"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Configure git name using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.gitconfig"
+    line: "[user]  name = {{ item.item_name }}"
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rw,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Configure git name using item_name for root.
+  lineinfile:
+    path: /root/.gitconfig"
+    line: "[user]  name = {{ item.item_name }}"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: Handle git email on gitconfig.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Configuring git email ...'
+      - '....................................................................'
+
+- name: Define mail_domain variable.
+  set_fact:
+    mail_domain: 'protonmail.com'
+
+- name: Configure git email.
+  lineinfile:
+    path: "/home/{{ item }}/.gitconfig"
+    line: "        email = {{ item }}@{{ mail_domain }}"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rw,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Configure git email for root.
+  lineinfile:
+    path: /root/.gitconfig
+    line: "        email = {{ item }}@{{ mail_domain }}"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Configure git email using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.gitconfig"
+    line: "        email = {{ item.item_name }}@{{ mail_domain }}"
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rw,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Configure git email using item_name for root.
+  lineinfile:
+    path: /root/.gitconfig"
+    line: "        email = {{ item.item_name }}@{{ mail_domain }}"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'

@@ -1,0 +1,181 @@
+---
+- name: Folder bookmarks management.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Creating folder bookmarks ...'
+      - '--------------------------------------------------------------------'
+
+- name: little-lab folder bookmark.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Creating little-lab folder bookmark ...'
+      - '....................................................................'
+
+- name: Create little-lab bookmark.
+  lineinfile:
+    path: "/home/{{ item }}/.config/gtk-3.0/bookmarks"
+    line: "file:///home/{{ item }}/little-lab"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rwx,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Create little-lab directory bookmark for root.
+  lineinfile:
+    path: "/root/.config/gtk-3.0/bookmarks"
+    line: "file:///home/{{ item }}/little-lab"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Create little-lab directory using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/gtk-3.0/bookmarks"
+    line: "file:///home/{{ item }}/little-lab"
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rwx,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Create little-lab directory bookmark for root using item_name.
+  lineinfile:
+    path: "/root/.config/gtk-3.0/bookmarks"
+    line: "file:///home/{{ item }}/little-lab"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: repos folder bookmark.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Creating repos folder bookmark ...'
+      - '....................................................................'
+
+- name: Create repos bookmark.
+  lineinfile:
+    path: "/home/{{ item }}/.config/gtk-3.0/bookmarks"
+    line: "file:///home/{{ item }}/repos"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rwx,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Create repos directory bookmark for root.
+  lineinfile:
+    path: "/root/.config/gtk-3.0/bookmarks"
+    line: "file:///root/repos"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Create repos directory using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/gtk-3.0/bookmarks"
+    line: "file:///home/{{ item }}/repos"
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rwx,g=r,o=r
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Create repos directory bookmark for root using item_name.
+  lineinfile:
+    path: "/root/.config/gtk-3.0/bookmarks"
+    line: "file:///root/repos"
+    create: true
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: Fix permissions.
+  file:
+    path: "/home/{{ item }}/.config"
+    state: directory
+    recurse: true
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Fix permissions using item_name.
+  file:
+    path: "/home/{{ item.item_name }}/.config"
+    state: directory
+    recurse: true
+    owner: "{{ current_user.item_name }}"
+    group: "{{ current_user.item_name }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'

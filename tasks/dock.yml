@@ -1,0 +1,42 @@
+---
+- name: Gnome dock configuration.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Configuring gnome dock ...'
+      - '--------------------------------------------------------------------'
+
+- name: Download gschema file.
+  get_url:
+    url: https://is.gd/eGDHFz
+    dest: /tmp/40_custom-config.gschema.override
+    force: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when: not ansible_check_mode
+
+- name: Copy custom gschema to /usr/share/glib-2.0/schemas/.
+  copy:
+    src: /tmp/40_custom-config.gschema.override
+    dest: /usr/share/glib-2.0/schemas/40_custom-config.gschema.override
+    remote_src: true
+    force: false
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when: not ansible_check_mode
+
+- name: Recompile schema to include custom changes.
+  command: glib-compile-schemas /usr/share/glib-2.0/schemas/
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when: not ansible_check_mode
+
+- name: Cleanup /tmp/40_custom-config.gschema.override file.
+  file:
+    path: /tmp/40_custom-config.gschema.override
+    state: absent
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when: not ansible_check_mode

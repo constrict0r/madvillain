@@ -1,0 +1,221 @@
+---
+- name: .bashrc configuration.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Configuring .bashrc ...'
+      - '--------------------------------------------------------------------'
+
+- name: Set changes alias.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Configuring changes alias ...'
+      - '....................................................................'
+
+- name: Set ch_al_a variable.
+  set_fact:
+    ch_al_a: 'alias changes="'
+
+- name: Set ch_al_b variable.
+  set_fact:
+    ch_al_b: 'find . -maxdepth 1 -mindepth 1 -type d -exec sh -c'
+
+- name: Set ch_al_c variable.
+  set_fact:
+    ch_al_c: "'(echo {} && cd {} && git status -s && echo)'"
+
+- name: Set ch_al_d variable.
+  set_fact:
+    ch_al_d: '\;"'
+
+- name: Add bashrc alias to each user .bashrc.
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    line: "{{ ch_al_a }} {{ ch_al_b }} {{ ch_al_c }} {{ ch_al_d }}"
+    owner: "{{ item }}"
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Add bashrc alias to root .bashrc.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ ch_al_a }} {{ ch_al_b }} {{ ch_al_c }} {{ ch_al_d }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Add bashrc alias to each user .bashrc using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.bashrc"
+    line: "{{ ch_al_a }} {{ ch_al_b }} {{ ch_al_c }} {{ ch_al_d }}"
+    owner: "{{ item.item_name }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Add bashrc alias to root .bashrc using item_name.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ ch_al_a }} {{ ch_al_b }} {{ ch_al_c }} {{ ch_al_d }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: Set runit alias.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Configuring runit alias ...'
+      - '....................................................................'
+
+- name: Set ru_it_a variable.
+  set_fact:
+    ru_it_a: 'alias runit="'
+
+- name: Set ru_it_b variable.
+  set_fact:
+    ru_it_b: 'ansible-playbook -i tests/inventory resources/test-playbook.yml'
+
+- name: Set ru_it_c variable.
+  set_fact:
+    ru_it_c: '"'
+
+- name: Add bashrc alias to each user .bashrc.
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    line: "{{ ru_it_a }} {{ ru_it_b }} {{ ru_it_c }}"
+    owner: "{{ item }}"
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Add bashrc alias to root .bashrc.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ ru_it_a }} {{ ru_it_b }} {{ ru_it_c }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Add bashrc alias to each user .bashrc using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.bashrc"
+    line: "{{ ru_it_a }} {{ ru_it_b }} {{ ru_it_c }}"
+    owner: "{{ item.item_name }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Add bashrc alias to root .bashrc using item_name.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ ru_it_a }} {{ ru_it_b }} {{ ru_it_c }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: Set gic alias.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Configuring gic alias ...'
+      - '....................................................................'
+
+- name: Set gic_a variable.
+  set_fact:
+    gic_a: 'alias gic="'
+
+- name: Set gic_b variable.
+  set_fact:
+    gic_b: "git add . && git commit -m 'Updated repository' && git push"
+
+- name: Set gic_c variable.
+  set_fact:
+    gic_c: '"'
+
+- name: Add bashrc alias to each user .bashrc.
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    line: "{{ gic_a }} {{ gic_b }} {{ gic_c }}"
+    owner: "{{ item }}"
+  with_items: "{{ unified }}"
+  changed_when: false
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Add bashrc alias to root .bashrc.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ gic_a }} {{ gic_b }} {{ gic_c }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Add bashrc alias to each user .bashrc using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.bashrc"
+    line: "{{ gic_a }} {{ gic_b }} {{ gic_c }}"
+    owner: "{{ item.item_name }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Add bashrc alias to root .bashrc using item_name.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ gic_a }} {{ gic_b }} {{ gic_c }}"
+  become: true
+  with_items: "{{ unified }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'

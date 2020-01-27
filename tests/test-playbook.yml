@@ -1,0 +1,52 @@
+---
+# Madvillain tests, from root folder run: ./testme.sh.
+
+- name: Apply madvillain configuration.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: Test with non-empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing with non-empty ...'
+        - '        __....._'
+        - '     .`` _  o    ``'
+        - '   ." O (_)     () o`'
+        - '  .           O        '
+        - ' . ()   o__...__    O   '
+        - '. _.--```       ```--._ '
+        - ':`                     `'
+        - ' `-.__    :    :   __.-`'
+        - '      ```-:    :-```'
+        - '         J     '
+        - '         :     '
+        - '        J       '
+        - '        :       '
+        - '        `._____.'
+        - '__________________________________________________________________'
+
+
+  - name: Apply configuration using user mary.
+    include_role:
+      name: constrict0r.madvillain
+    vars:
+      users: [constrict0r]
+
+  - name: Verify emacs configured for constrict0r.
+    file:
+      path: /home/constrict0r/.emacs.d/python.el
+
+  - name: Verify curl package installed.
+    file:
+      path: /usr/bin/curl
+
+  - name: Verify emacs package installed.
+    file:
+      path: /usr/bin/emacs
+
+  - name: Verify gedit package installed.
+    file:
+      path: /usr/bin/gedit

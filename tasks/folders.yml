@@ -1,0 +1,209 @@
+---
+- name: Folder tree structure management.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Creating folder structure ...'
+      - '--------------------------------------------------------------------'
+
+- name: little-lab folder.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Creating little-lab folder ...'
+      - '....................................................................'
+
+- name: Create little-lab directory for each user.
+  file:
+    path: "/home/{{ item }}/little-lab"
+    state: directory
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rw,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Create little-lab directory for root.
+  file:
+    path: "/root/little-lab"
+    state: directory
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Create little-lab directory for each user using item_name.
+  file:
+    path: "/home/{{ item.item_name }}/little-lab"
+    state: directory
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rw,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Create little-lab directory for root using item_name.
+  file:
+    path: "/root/little-lab"
+    state: directory
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: Fix permissions.
+  file:
+    path: "/home/{{ item }}/little-lab"
+    state: directory
+    recurse: true
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Fix permissions using item_name.
+  file:
+    path: "/home/{{ item.item_name }}/little-lab"
+    state: directory
+    recurse: true
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: repos folder.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Creating repos folder ...'
+      - '....................................................................'
+
+- name: Create repos directory for each user.
+  file:
+    path: "/home/{{ item }}/repos"
+    state: directory
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rw,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Create repos directory for root.
+  file:
+    path: "/root/repos"
+    state: directory
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Create repos directory for each user using item_name.
+  file:
+    path: "/home/{{ item.item_name }}/repos"
+    state: directory
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rw,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Create repos directory for root using item_name.
+  file:
+    path: "/root/repos"
+    state: directory
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
+
+- name: Fix permissions.
+  file:
+    path: "/home/{{ item }}/repos"
+    state: directory
+    recurse: true
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Fix permissions using item_name.
+  file:
+    path: "/home/{{ item.item_name }}/repos"
+    state: directory
+    recurse: true
+    owner: "{{ current_user.item_name }}"
+    group: "{{ current_user.item_name }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'

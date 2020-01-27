@@ -1,0 +1,58 @@
+---
+- name: Display Role Details.
+  debug:
+    msg:
+      - '===================================================================='
+      - 'constrict0r.madvillain'
+      - 'Apply the ultimate madvillain configuration.'
+      - '===================================================================='
+
+- name: Bashrc setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling bashrc setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Bashrc setup for all users.
+  include_tasks: bashrc.yml
+
+- name: Folders setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling folders setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Folders setup for all users.
+  include_tasks: folders.yml
+
+- name: Bookmarks setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling Bookmarks setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Bookmarks setup for all users.
+  include_tasks: bookmarks.yml
+
+- name: Gnome dock setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling Gnome dock setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Gnome dock setup for all users.
+  include_tasks: dock.yml
+
+- name: Git setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling git setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Git setup for all users.
+  include_tasks: git.yml
