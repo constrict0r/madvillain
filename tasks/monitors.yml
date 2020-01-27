@@ -15,7 +15,7 @@
 
 - name: Download monitors.xml file.
   get_url:
-    url: https://is.gd/fxlcpH
+    url: https://is.gd/Z2lxMt
     dest: /tmp/monitors.xml
   when: not ansible_check_mode
 
