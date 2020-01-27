@@ -37,7 +37,7 @@
 
   - name: Verify emacs configured for constrict0r.
     file:
-      path: /home/constrict0r/.emacs.d/python.el
+      path: /home/constrict0r/.emacs.d/config/python.el
 
   - name: Verify curl package installed.
     file:
