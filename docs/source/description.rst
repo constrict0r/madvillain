@@ -83,9 +83,11 @@ By default this role applies the following configuration:
   ├── little-lab
   ├── repos
   ├── .emacs.d
-  │   ├── base.el
+  │   ├── config
+  │   │   ├── base.el
+  │   │   ├── org.el
+  │   │   └── python.el
   │   ├── init.el
-  │   ├── python.el
   │   └── themes
   │       └── wintermute-theme.el
   └── .vimrc
