@@ -381,6 +381,13 @@ By default this role applies the following configuration:
       * Adds the **gic** bash alias to quickly make a git commit and
          push (lazy lazy villain).
 
+      * Adds the **fixit** bash alias to quickly set monitors
+         display.
+
+   * gdm3
+
+      * Disables the Wayland protocol.
+
    * gnome
 
    ..

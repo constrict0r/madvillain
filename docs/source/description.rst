@@ -53,7 +53,7 @@ By default this role applies the following configuration:
 
 - Installs the madvillain software:
 
- .. include:: packages/madvillain.inc
+ .. include:: parts/packages/madvillain.inc
 
 - Configures the base software:
 
@@ -73,7 +73,7 @@ By default this role applies the following configuration:
 
 - Configures the madvillain software:
 
- .. include:: configured/madvillain.inc
+ .. include:: parts/configured/madvillain.inc
 
 - Creates the following home directory layout:
 
