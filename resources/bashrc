@@ -1,5 +1,5 @@
 # Madvillain bash alias.
 alias changes="find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git status -s && echo)' \;"
-alias runit="ansible-playbook -i tests/inventory tests/test-playbook.yml"
+alias runit="ansible-playbook -i tests/inventory resources/local-playbook.yml"
 alias gic="git add . && git commit -m 'Updated repository' && git push"
 alias fixit='xrandr --newmode "1366x768_60.00" 84.75 1360 1432 1568 1776 768 771 781 798 -hsync +vsync && xrandr --addmode VGA-1 "1366x768_60.00" && xrandr --output VGA-1 --mode "1366x768_60.00"'
