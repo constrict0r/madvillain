@@ -219,3 +219,81 @@
     - unified is not variable_empty
     - item.item_name is defined
     - item.item_name == 'root'
+
+- name: Set fixit alias.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Configuring fixit alias ...'
+      - '....................................................................'
+
+- name: Set fix_a variable.
+  set_fact:
+    fix_a: "alias fixit='"
+
+- name: Set fix_b variable.
+  set_fact:
+    fix_b: 'xrandr --newmode "1366x768_60.00" 84.75 1360 1432 1568 1776 768'
+
+- name: Set fix_c variable.
+  set_fact:
+    fix_c: '771 781 798 -hsync +vsync && xrandr --addmode VGA-1'
+
+- name: Set fix_d variable.
+  set_fact:
+    fix_d: "1366x768_60.00" && xrandr --output VGA-1 --mode "1366x768_60.00"'
+
+- name: Set fix_e variable.
+  set_fact:
+    fix_e: "'"
+
+- name: Add bashrc alias to each user .bashrc.
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    line: "{{ fix_a }} {{ fix_b }} {{ fix_c }} {{ fix_d }} {{ fix_e }}"
+    owner: "{{ item }}"
+  with_items: "{{ unified }}"
+  changed_when: false
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Add bashrc alias to root .bashrc.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ fix_a }} {{ fix_b }} {{ fix_c }} {{ fix_d }} {{ fix_e }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is not defined
+    - item == 'root'
+
+- name: Add bashrc alias to each user .bashrc using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.bashrc"
+    line: "{{ fix_a }} {{ fix_b }} {{ fix_c }} {{ fix_d }} {{ fix_e }}"
+    owner: "{{ item.item_name }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Add bashrc alias to root .bashrc using item_name.
+  lineinfile:
+    path: /root/.bashrc
+    line: "{{ fix_a }} {{ fix_b }} {{ fix_c }} {{ fix_d }} {{ fix_e }}"
+  become: true
+  with_items: "{{ unified }}"
+  when:
+    - not ansible_check_mode
+    - unified is not variable_empty
+    - item.item_name is defined
+    - item.item_name == 'root'
