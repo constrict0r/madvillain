@@ -87,7 +87,7 @@
 - name: Disable /etc/gdm3/daemon.conf WaylandEnable (fancy monitor names).
   lineinfile:
     path: /etc/gdm3/daemon.conf
-    regexp: 'WaylandEnable=true'
+    regexp: '#WaylandEnable=false'
     line: WaylandEnable=false
   changed_when: false
   when:
