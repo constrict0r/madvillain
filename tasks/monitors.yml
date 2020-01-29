@@ -87,8 +87,9 @@
 - name: Disable /etc/gdm3/daemon.conf WaylandEnable (fancy monitor names).
   lineinfile:
     path: /etc/gdm3/daemon.conf
-    regexp: '#WaylandEnable=false'
+    regexp: '^(.*)WaylandEnable=false'
     line: WaylandEnable=false
+  become: true
   changed_when: false
   when:
     - not ansible_check_mode
