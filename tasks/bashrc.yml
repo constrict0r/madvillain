@@ -241,7 +241,7 @@
 
 - name: Set fix_d variable.
   set_fact:
-    fix_d: "1366x768_60.00" && xrandr --output VGA-1 --mode "1366x768_60.00"'
+    fix_d: '"1366x768_60.00" && xrandr --output VGA-1 --mode "1366x768_60.00"'
 
 - name: Set fix_e variable.
   set_fact:
