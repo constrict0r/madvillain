@@ -4,6 +4,7 @@ packages:
  - https://is.gd/9FiCqe
  # Devels packages.
  - https://is.gd/4fKDrf
+ # Madvillain packages.
  - docker
  - docker.io
  - docker-compose
@@ -15,6 +16,8 @@ packages_pip:
  - https://is.gd/4fKDrf
 
 group:
+ # Develmicro groups.
+ - https://is.gd/0d534I
  - docker
  - libvirt
  - libvirt-qemu

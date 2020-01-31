@@ -39,6 +39,8 @@ component autodebian {
 
   package develpy
 
+  package develmicro
+
   package devels
 
   package madvillain
@@ -111,9 +113,15 @@ component autodebian {
 
   develpy --> develbase : uses config
 
+  develmicro --* constructor
+
+  develmicro --> develbase : uses config
+
   devels --* constructor
 
   devels --> develpy: uses config
+
+  devels --> develmicro: uses config
 
   madvillain --* constructor
 

@@ -35,9 +35,13 @@
     vars:
       users: [constrict0r]
 
-  - name: Verify emacs configured for constrict0r.
+  - name: Verify emacs python configured for constrict0r.
     file:
       path: /home/constrict0r/.emacs.d/config/python.el
+
+  - name: Verify emacs microcontroller configured for constrict0r.
+    file:
+      path: /home/constrict0r/.emacs.d/config/micro.el
 
   - name: Verify curl package installed.
     file:
