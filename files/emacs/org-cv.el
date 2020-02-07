@@ -10,7 +10,3 @@
 (use-package ox-moderncv
     :load-path "~/org/org-cv/"
     :init (require 'ox-moderncv))
-
- (use-package ox-moderncv
-     :load-path "~/org/org-cv/"
-     :init (require 'ox-altacv))
