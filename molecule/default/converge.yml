@@ -1,0 +1,63 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Setting up test environment.
+      debug:
+        msg:
+          - '==============================================================='
+          - 'Pre tasks'
+          - '==============================================================='
+
+    - name: Ensure Python requirements installed.
+      apt:
+        name:
+          - python
+          - python-pip
+          - python-setuptools
+          - python3-pip
+          - python3-setuptools
+        state: present
+      changed_when: false
+
+    - name: Ensure Pip requirements installed.
+      pip:
+        name:
+          - flake8
+          - requests
+      become: false
+      changed_when: false
+
+  roles:
+    - role: madvillain
+      users: constrict0r
+
+  post_tasks:
+    - name: Run verification tests.
+      debug:
+        msg:
+          - '================================================================'
+          - 'Post tasks'
+          - '================================================================'
+
+    - name: Verify emacs python configured for constrict0r.
+      file:
+        path: /home/constrict0r/.emacs.d/config/python.el
+
+    - name: Verify emacs microcontroller configured for constrict0r.
+      file:
+        path: /home/constrict0r/.emacs.d/config/micro.el
+
+    - name: Verify curl package installed.
+      file:
+        path: /usr/bin/curl
+
+    - name: Verify emacs package installed.
+      file:
+        path: /usr/bin/emacs
+
+    - name: Verify gedit package installed.
+      file:
+        path: /usr/bin/gedit
