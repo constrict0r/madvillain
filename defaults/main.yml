@@ -6,6 +6,7 @@ packages:
  - https://is.gd/4fKDrf
  # Madvillain packages.
  - docker
+ - docker.io
  - docker-compose
  - qemu-kvm
  - virt-manager
